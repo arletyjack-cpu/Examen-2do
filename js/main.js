@@ -103,7 +103,7 @@ let catalog = [
         name: "Silly Low Poly Pilot",
         genre: "Silly",
         type: "Bundle",
-        buyLink: '',
+        buyLink: 'https://www.roblox.com/bundles/591696/',
         imageLink:"images/lowpolypilot.webp",
         description: 'When the Silly Cat became my mark, decided to play around with it a little bit more, and came up with this. Initially wanted to test the limits of Roblox character complexity, and found it very quickly, still managed to give it a bunch of little details that I really liked'
     },
@@ -131,40 +131,65 @@ const grid = document.getElementById('Grid')
 
 const creator = "xXArlyetaXx"
 
-catalog.forEach(character => {
-    const card = `
-        <div class="card cell has-background-primary-10 mb-0">
-            <div class="card-image">
-                <figure class="image">
-                    <img src="${character.imageLink}" alt="${character.name}" />
-                </figure>
-            </div>
-            <div class="card-content">
-                <div class="media mb-3">
-                    <div class="media-left">
-                        <figure class="image is-64x64"><img src="images/pfp.webp" alt="Placeholder image" /> </figure>
-                    </div>
-                    <div class="media-content">
-                        <p class="title is-4">${character.name}</p>
-                        <p class="subtitle is-6">Type: ${character.type}<br>Category: ${character.genre}</p>
-                    </div>            
+//---------CREATE
+
+function populateGrid(characterArray){
+
+    characterArray.forEach(character => {
+        const card = `
+            <div class="card cell has-background-primary-10 mb-0">
+                <div class="card-image">
+                    <figure class="image">
+                        <img src="${character.imageLink}" alt="${character.name}" />
+                    </figure>
                 </div>
-                <div>
-                    <p class="has-text-weight-bold has-text-white ">Created by: <a href="https://www.roblox.com/users/3719978880/profile" style="text-decoration: underline;">@${creator}</a></p>
-                </div> 
+                <div class="card-content">
+                    <div class="media mb-3">
+                        <div class="media-left">
+                            <figure class="image is-64x64"><img src="images/pfp.webp" alt="Placeholder image" /> </figure>
+                        </div>
+                        <div class="media-content">
+                            <p class="title is-4">${character.name}</p>
+                            <p class="subtitle is-6">Type: ${character.type}<br>Category: ${character.genre}</p>
+                        </div>            
+                    </div>
+                    <div>
+                        <p class="has-text-weight-bold has-text-white ">Created by: <a href="https://www.roblox.com/users/3719978880/profile" style="text-decoration: underline;">@${creator}</a></p>
+                    </div> 
+                </div>
+                <footer class="card-footer">
+                    <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/hyperIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
+                    <a href="#" class="card-footer-item">Edit</a>
+                    <span class="card-footer-item icon" href="${character.buyLink}"><i class="fa-regular fa-floppy-disk"></i></span>
+                </footer>
             </div>
-            <footer class="card-footer">
-                <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/hyperIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
-                <a href="#" class="card-footer-item">Edit</a>
-                <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/interIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
-            </footer>
-        </div>
-        `;
-    grid.insertAdjacentHTML('beforeend', card);
-});
+            `;
+        grid.insertAdjacentHTML('beforeend', card);
+    });
+}
+
+
+//-------READ
 
 const myInput = document.getElementById('searchInput');
 
 myInput.addEventListener('input', (event) => {
-    console.log(`input: ${event.target.value}`)
+
 });
+
+//---------Initialize
+
+//--Save to local
+localStorage.setItem(catalog, JSON.stringify(catalog));
+
+
+//--Retrieve
+const localCatalog = localStorage.getItem("savedCatalog");
+
+if (localCatalog) {
+    const catalog = JSON.parse(localCatalog);
+    populateGrid(catalog)
+}
+else {
+    populateGrid(catalog)
+}

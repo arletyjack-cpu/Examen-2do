@@ -4,7 +4,7 @@
         <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
         <link rel="stylesheet"  href="css/style.css">
     </head>
-    <body>
+    <body class="is-size-5">
         <nav class="navbar has-background-primary-10 is-fixed-top mb-auto drop-shadow">
                 <div class="media p-5 columns">
                     <div class="column is-one-third-desktop is-one-third-tablet is-one-third-mobile">
@@ -18,17 +18,24 @@
                 </div>
         </nav>
         <div class="columns is-mobile">
-            <div class="card column fixed-grid has-3-cols-desktop has-1-cols-mobile has-background-primary-15 is-two-thirds-desktop is-half-mobile ml-6 mr-5">
-                <div class="grid" id="Grid">
-                    <!-- Content goes here -->  
+            <div class="column is-two-thirds-desktop is-half-mobile ml-6">
+                <div class="card has-background-primary-15 fixed-grid has-3-cols-desktop has-1-cols-mobile p-4">
+                    <div class="grid" id="Grid">
+                        <!-- Content goes here -->  
+                    </div>
                 </div>
             </div>
-            <div class="column mr-5" id="descriptionBox">
-                <div class="card-content">
-                    <div class="media-content">
-                        <input class="input is-rounded has-background-primary-15" type="text" placeholder="Search" id="searchInput"/>
+            <div class="column">
+                <div class="card has-background-primary-15 mr-5" id="descriptionBox">
+                    <div class="card-content">
+                        <input class="input is-rounded has-background-primary-10" type="text" placeholder="Search" id="searchInput"/>
                         <p class="title is-4" id="Description">ASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADG</p>
                     </div>
+                    <footer class="card-footer">
+                        <a href="#" class="card-footer-item">Save</a>
+                        <a href="#" class="card-footer-item">Edit</a>
+                        <a href="#" class="card-footer-item">Delete</a>
+                    </footer>
                 </div>
             </div>
         </div>

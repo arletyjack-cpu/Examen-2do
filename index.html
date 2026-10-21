@@ -2,29 +2,22 @@
     <head>
         <title>Arlet's Creations</title>
         <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
+        <link rel="stylesheet"  href="css/style.css">
     </head>
     <body>
-        <h1>Arlet's Avatar Catalog</h1>
-        <p>Some of my favorite creations</p>
+        <section class="hero">
+        <div class="hero-body">
+            <h1 class="title">Arlet's Avatar Catalog</h1>
+            <p class="subtitle">Some of my favorite creations</p>
+        </div>
+        </section>
         <div class="columns is-mobile my-4">
-            <div class="card column fixed-grid has-3-cols-desktop has-2-cols-mobile has-background-black-ter is-two-thirds-desktop is-half-mobile ml-6 mr-5">
+            <div class="card column fixed-grid has-3-cols-desktop has-1-cols-mobile has-background-black-ter is-two-thirds-desktop is-half-mobile ml-6 mr-5">
                 <div class="grid" id="Grid">
-                    <div class="cell card" id="CharContainer">
-                        <div class="card-image">
-                            <figure class="image is-4by3">
-                            <img src="https://bulma.io/assets/images/placeholders/1280x960.png" alt="Placeholder image"/>
-                            </figure>
-                        </div>
-                        <div class="card-content">
-                            <div class="media-content">
-                                <p class="title is-4" id="Name"></p>
-                                <p class="subtitle is-6" id="Type"></p>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Content goes here -->  
                 </div>
             </div>
-            <div class=" card has-background-black-ter column mr-5" id="DescriptionBox">
+            <div class="column mr-5" id="DescriptionBox">
                     <div class="card-content">
                         <div class="media-content">
                             <p class="title is-4" id="Description">ASDFASDSADG</p>
@@ -33,6 +26,8 @@
                 </div>
             </div>
         </div>
+
+        <div></div>
     <script src="js/main.js"></script>
     </body>
 </html>

@@ -133,7 +133,7 @@ const creator = "xXArlyetaXx"
 
 catalog.forEach(character => {
     const card = `
-        <div class="card cell mb-0">
+        <div class="card cell has-background-primary-10 mb-0">
             <div class="card-image">
                 <figure class="image">
                     <img src="${character.imageLink}" alt="${character.name}" />
@@ -143,25 +143,28 @@ catalog.forEach(character => {
                 <div class="media mb-3">
                     <div class="media-left">
                         <figure class="image is-64x64"><img src="images/pfp.webp" alt="Placeholder image" /> </figure>
+                    </div>
+                    <div class="media-content">
+                        <p class="title is-4">${character.name}</p>
+                        <p class="subtitle is-6">Type: ${character.type}<br>Category: ${character.genre}</p>
+                    </div>            
                 </div>
-                <div class="media-content">
-                    <p class="title is-4">${character.name}</p>
-                    <p class="subtitle is-6">Type: ${character.type}<br>Category: ${character.genre}</p>
-                </div>            
+                <div>
+                    <p class="has-text-weight-bold has-text-white ">Created by: <a href="https://www.roblox.com/users/3719978880/profile" style="text-decoration: underline;">@${creator}</a></p>
+                </div> 
             </div>
-            <div>
-                <p class="has-text-weight-bold has-text-white ">Created by: <a href="https://www.roblox.com/users/3719978880/profile" style="text-decoration: underline;">@${creator}</a></p>
-            </div> 
+            <footer class="card-footer">
+                <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/hyperIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
+                <a href="#" class="card-footer-item">Edit</a>
+                <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/interIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
+            </footer>
         </div>
-        <footer class="card-footer">
-            <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/hyperIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
-            <a href="#" class="card-footer-item">Edit</a>
-            <a class="card-footer-item" href="${character.buyLink}"><figure class="image"><img src="images/interIcon.webp" alt="Placeholder image" style="width: 40px;"/> </figure></a>
-        </footer> 
         `;
     grid.insertAdjacentHTML('beforeend', card);
-})
+});
 
-const emptyCard = ``
-grid.insertAdjacentHTML('beforeend', Card);
-;
+const myInput = document.getElementById('searchInput');
+
+myInput.addEventListener('input', (event) => {
+    console.log(`input: ${event.target.value}`)
+});

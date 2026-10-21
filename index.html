@@ -1,33 +1,37 @@
-<html>
+<html class="has-navbar-fixed-top has-background-primary-10">
     <head>
         <title>Arlet's Creations</title>
         <link rel="stylesheet"  href="https://cdn.jsdelivr.net/npm/bulma@1.0.4/css/bulma.min.css">
         <link rel="stylesheet"  href="css/style.css">
     </head>
     <body>
-        <section class="hero">
-        <div class="hero-body">
-            <h1 class="title">Arlet's Avatar Catalog</h1>
-            <p class="subtitle">Some of my favorite creations</p>
-        </div>
-        </section>
-        <div class="columns is-mobile my-4">
-            <div class="card column fixed-grid has-3-cols-desktop has-1-cols-mobile has-background-black-ter is-two-thirds-desktop is-half-mobile ml-6 mr-5">
+        <nav class="navbar has-background-primary-10 is-fixed-top mb-auto drop-shadow">
+                <div class="media p-5 columns">
+                    <div class="column is-one-third-desktop is-one-third-tablet is-one-third-mobile">
+                        <figure class="image"><img src="images/title.webp" alt="Placeholder image" /> </figure>
+                    </div>
+                    <div class="column has-text-right mt-auto">
+                        <h1 class="title">Arlet's Avatar Catalog</h1>
+                        <p class="subtitle">Some of my favorite creations</p>
+                        <a class="subtitle has-text-weight-bold has-text-white " href="https://www.roblox.com/communities/34938712/Arlets-Monopoly#!/about" style="text-decoration: underline;">Join the community</a>
+                    </div>
+                </div>
+        </nav>
+        <div class="columns is-mobile">
+            <div class="card column fixed-grid has-3-cols-desktop has-1-cols-mobile has-background-primary-15 is-two-thirds-desktop is-half-mobile ml-6 mr-5">
                 <div class="grid" id="Grid">
                     <!-- Content goes here -->  
                 </div>
             </div>
-            <div class="column mr-5" id="DescriptionBox">
-                    <div class="card-content">
-                        <div class="media-content">
-                            <p class="title is-4" id="Description">ASDFASDSADG</p>
-                        </div>
+            <div class="column mr-5" id="descriptionBox">
+                <div class="card-content">
+                    <div class="media-content">
+                        <input class="input is-rounded has-background-primary-15" type="text" placeholder="Search" id="searchInput"/>
+                        <p class="title is-4" id="Description">ASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADGASDFASDSADG</p>
                     </div>
                 </div>
             </div>
         </div>
-
-        <div></div>
     <script src="js/main.js"></script>
     </body>
 </html>

@@ -1,40 +1,36 @@
-# Proyecto Web — Examen 2
+# Colección de personajes CRUD: con local storage — Examen 2do Parcial
+
+* Materia: Desarrollo de Aplicaciones Web
+* Alumna: Arlet Valadez Manriquez
+* Matricula: 6100112
 
 ## Descripción
 
-Este proyecto es una aplicación web desarrollada para el segundo examen de la materia de Desarrollo Web. Presenta una interfaz navegable con contenidos multimedia, estilos personalizados e interacciones en JavaScript.
+Aplicación web, que muestra un catalogo en el cual se pueden, crear, buscar/filtrar, actualizar/editar, y eliminar objetos de una colección de personajes (u otros objetos extra).
 
 ## Funcionalidades implementadas
 
-- Navegación entre las distintas secciones del sitio.
-- Diseño adaptable para equipos de escritorio y dispositivos móviles.
-- Presentación de información mediante textos, imágenes y elementos multimedia.
+- Colección de proyectos hechos por Arlet.
+- GUI sencillo, y fácil de entender.
+- Diseño semi-adaptable para equipos de escritorio y dispositivos móviles.
 - Formularios de interacción y validación de datos con HTML y JavaScript.
 - Efectos visuales y estilos personalizados con CSS.
 - Interactividad dinámica en el navegador.
 
 ## Requisitos
 
-- Un navegador web moderno, como Google Chrome, Microsoft Edge, Firefox o Safari.
-- Para obtener una mejor experiencia, se recomienda tener un editor como Visual Studio Code.
+- Un navegador basado en Chromium.
+- Acceso al repositorio, o GitHub Pages.
 
 ## Instrucciones de uso
 
+#### Ejecución local
+
 1. Descarga o clona este repositorio.
-2. Abre la carpeta del proyecto en Visual Studio Code.
-3. Abre el archivo principal, generalmente `index.html`, desde el navegador.
-4. También puedes usar la extensión **Live Server** de Visual Studio Code:
-   - Haz clic derecho sobre `index.html`.
-   - Selecciona **Open with Live Server**.
-5. Navega por las secciones y utiliza los elementos interactivos disponibles en el sitio.
+2. Abre el archivo `index.html`, con el navegador.
+3. Navega y utiliza los elementos interactivos disponibles en el sitio.
 
-## Estructura básica
+#### Ejecución en GitHub Pages
 
-- `index.html`: contiene la estructura principal de la página.
-- `css/`: incluye las hojas de estilo.
-- `js/`: contiene los scripts de JavaScript.
-- `assets/` o `img/`: almacena imágenes y otros recursos multimedia.
-
-## Autor
-
-Proyecto elaborado como parte del Examen 2 de Desarrollo Web.
+1. Accede al URL https://arletyjack-cpu.github.io/Examen-2do/
+2. Navega y utiliza los elementos interactivos disponibles en el sitio.

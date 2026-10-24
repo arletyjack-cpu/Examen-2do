@@ -1,4 +1,4 @@
-let catalog = [
+const defaultCatalog = [
     {
         id: 0,
         name: "Low Poly Chibi Cat",
@@ -128,86 +128,139 @@ let catalog = [
 ]
 
 
-//---------Initialize
+//---------Initialize variables
 
 const grid = document.getElementById('Grid')
+const descBox = document.getElementById('descriptionBox')
 const creator = "xXArlyetaXx"
-const myInput = document.getElementById('searchInput');
+const searchInput = document.getElementById('searchInput')
+const successIcon = "images/checkmark-circle-outline.svg"
+const failIcon = "images/close-circle-outline.svg"
+const defaultDescriptionBox = `
+                    <p class="title has-text-white has-text-centered">Arlet's Monopoly</p>
+                    <figure class="image m-5"><img src="images/community.webp" alt="Placeholder image" /></figure>
+                    <p class="subtitle has-text-white has-text-centered">Just wanted my skin on Roblox, now I do this for a living</p>
+                    `
+let localCatalog = localStorage.getItem("savedCatalog")
 
-//--Retrieve and create grid
-let localCatalog = localStorage.getItem("savedCatalog");
+//--------------------------------------------------------------------------------CREATE
 
-if (localCatalog) {
-    localCatalog = JSON.parse(localCatalog);
-    populateGrid(localCatalog)
+//---Save Catalog
+document.getElementById(`saveCatalog`).addEventListener('click', () => {
+    try {
+        localStorage.setItem("savedCatalog", JSON.stringify(catalog));
+        descBox.innerHTML = 
+        `
+            <div class="my-auto">
+                <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                    <figure class="image is-flex is-align-items-center" style="width: 50%;"><img src=${successIcon} alt="Placeholder image" style="width: 50%;"><img src=images/save-outline.svg alt="Placeholder image" style="width: 45%;"></figure>
+                    <p class="title has-text-black ml-5">Saved to local storage</p>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            initializeDescriptionBox();
+        }, 1000);
+    } catch (error) {
+        console.log("Tried to save but something weird happened or sum, idkkkk...", error)
+        descBox.innerHTML = 
+        `
+            <div class="my-auto">
+                <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                    <figure class="image is-flex is-align-items-center" style="width: 50%;"><img src=${failIcon} alt="Placeholder image" style="width: 50%;"><img src=images/save-outline.svg alt="Placeholder image" style="width: 45%;"></figure>
+                    <p class="title has-text-black ml-5">Couldn't save to local storage</p>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            initializeDescriptionBox();
+        }, 1000);
+    }
+});
+
+function initializeGrid(){
+    //--Retrieve and create grid
+    if (localCatalog) {
+        try {
+            catalog = JSON.parse(localCatalog);
+            localCatalog = catalog;
+        } catch (error) {
+            console.log("During initialization, tried to load saved catalog but it had corrupted JSON, loading default catalog and deleting corrupted files...", error)
+            localStorage.removeItem("savedCatalog")
+            catalog = defaultCatalog.map(item => ({ ...item }));
+            localCatalog = catalog;
+        }
+    }
+    else {
+        catalog = defaultCatalog.map(item => ({ ...item }));
+        localCatalog = catalog;
+    }
+    populateGrid(catalog);
+};
+
+function initializeDescriptionBox(){
+    //--Retrieve and create description box
+    descBox.innerHTML = defaultDescriptionBox;
 }
-else {
-    populateGrid(catalog)
-}
-
-addAddButtonToAddStuff()
-
-
-//--------------------------------------------------------CREATE
 
 //----Create char card
 
-function createCard(character){
+function createCard(item){
     
     grid.insertAdjacentHTML('beforeend',
         `
-            <div class="card cell has-background-primary-10 mb-0" id="ID-${character.id}">
+            <div class="card cell has-background-primary-10 mb-0" id="ID-${item.id}">
                 <div class="card-image">
                     <figure class="image">
-                        <img src="${character.imageLink}" alt="${character.name}" />
+                        <img src="${item.imageLink}" alt="${item.name}" onerror="this.src='images/imagenotfound.webp';"/>
                     </figure>
                 </div>
                 <div class="card-content">
                     <div class="media mb-3">
                         <div class="media-left">
-                            <figure class="image is-64x64"><img src="images/pfp.webp" alt="Placeholder image" /> </figure>
+                            <figure class="image is-64x64"><img src="images/pfp.webp" alt="Placeholder image" onerror="this.src='images/imagenotfound.webp';"/> </figure>
                         </div>
                         <div class="media-content">
-                            <p class="title is-4">${character.name}</p>
-                            <p class="subtitle is-6">Type: ${character.type}<br>Category: ${character.genre}</p>
+                            <p class="title is-4">${item.name}</p>
+                            <p class="subtitle is-6">Type: ${item.type}<br>Category: ${item.genre}</p>
                         </div>            
                     </div>
                     <div>
                         <p class="has-text-weight-bold has-text-white ">Created by: <a href="https://www.roblox.com/users/3719978880/profile" style="text-decoration: underline;">@${creator}</a></p>
                     </div> 
                 </div>
-                <footer class="card-footer p-4">
-                    <a class="card-footer-item icon my-auto" href="${character.buyLink}"><figure class="image invert"><img src="images/arrow-up-left-box-outline.svg" alt="Placeholder image" style="width: 30px;"></figure></a>
-                    <a class="card-footer-item icon my-auto" href="${character.buyLink}"><figure class="image invert"><img src="images/pen-to-square-regular-full.svg" alt="Placeholder image" style="width: 32px;"></figure></a>
-                    <a class="card-footer-item icon my-auto" id="DescriptionCaller${character.id}"><figure class="image invert"><img src="images/ellipsis-horizontal-circle-outline.svg" alt="Placeholder image" style="width: 32px;"></figure></a>
+                <footer class="card-footer is-size-5 p-4">
+                    <a class="card-footer-item icon my-auto" href="${item.buyLink}"><figure class="image invert pr-4"><img src="images/arrow-up-left-box-outline.svg" alt="Placeholder image" style="width: 30px;"></figure>Buy</a>
+                    <a class="card-footer-item icon my-auto" id="editItem${item.id}"><figure class="image invert pr-4"><img src="images/pen-to-square-regular-full.svg" alt="Placeholder image" style="width: 32px;"></figure>Edit</a>
+                    <a class="card-footer-item icon my-auto" id="DescriptionCaller${item.id}"><figure class="image invert pr-4"><img src="images/ellipsis-horizontal-circle-outline.svg" alt="Placeholder image" style="width: 32px;"></figure>Read</a>
                 </footer>
             </div>
         `
     );
-    document.getElementById(`DescriptionCaller${character.id}`).addEventListener('click', () => {
-    document.getElementById("descriptionBox").innerHTML = 
+    document.getElementById(`DescriptionCaller${item.id}`).addEventListener('click', () => {
+    descBox.innerHTML = 
     `
-        <h1 class="title has-text-centered ">${character.name}</h1>
+        <h1 class="title has-text-centered ">${item.name}</h1>
         <div class="is-flex is-justify-content-center">
             <figure class="image" style="width: 50%; height=50%">
-                <img src="${character.imageLink}" alt="${character.name}" />
+                <img src="${item.imageLink}" alt="${item.name}" onerror="this.src='images/imagenotfound.webp';"/>
             </figure>
         </div>
-        <div style="max-height: 200px; overflow-y: auto;">
-            <p class="subtitle">Description</p>
-            <p id="descriptionText"></p>
+        <div class="is-flex is-flex-direction-column is-justify-content-center" style="height: 240px; max-height: 240px;">
+            <p class="subtitle has-text-white">Description</p>
+            <p style="overflow-y: auto;" id="descriptionText"></p>
         </div>
     `;
-    document.getElementById("descriptionText").textContent = character.description;
+    document.getElementById("descriptionText").textContent = item.description;
     });
 }
 
-
-function populateGrid(characterArray){
-    characterArray.forEach(character => {createCard(character);});
+function populateGrid(itemArray){
+    grid.innerHTML=``
+    itemArray.forEach(item => {createCard(item);});
     grid.insertAdjacentHTML('beforeend',
         `
-            <div class="card cell has-background-primary-10 p-auto">
+            <div class="card cell has-background-primary-10 p-auto" style="min-height: 606px;">
                 <div class="card-image is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
                     <a id="addToCatalog"><figure class="image invert"><img src="images/add-circle-outline.svg" alt="Placeholder image" style="width: 100px;"></figure></a>
                 </div>
@@ -216,69 +269,250 @@ function populateGrid(characterArray){
     );
 }
 
-//----AddItems
-function addAddButtonToAddStuff() {
-    document.getElementById(`addToCatalog`).addEventListener('click', () => {
-        const characters = localCatalog || catalog;
-        const nextId = characters.reduce((maxId, character) => Math.max(maxId, Number(character.id) || 0), -1) + 1;
-
-        document.getElementById("descriptionBox").innerHTML = `
-            <h1 class="title has-text-centered">Add a character</h1>
-            <form id="catalogForm">
-                <div class="field"><label class="label" for="newId">ID</label><input class="input" id="newId" name="id" type="number" value="${nextId}" readonly></div>
-                <div class="field"><label class="label" for="newName">Name</label><input class="input" id="newName" name="name" type="text" required></div>
-                <div class="field"><label class="label" for="newGenre">Genre</label><input class="input" id="newGenre" name="genre" type="text" required></div>
-                <div class="field"><label class="label" for="newType">Type</label><input class="input" id="newType" name="type" type="text" required></div>
-                <div class="field"><label class="label" for="newBuyLink">Buy link</label><input class="input" id="newBuyLink" name="buyLink" type="url" required></div>
-                <div class="field"><label class="label" for="newImageLink">Image link</label><input class="input" id="newImageLink" name="imageLink" type="text" required></div>
-                <div class="field"><label class="label" for="newDescription">Description</label><textarea class="textarea" id="newDescription" name="description" required></textarea></div>
-                <button class="button" type="submit">Add character</button>
-                <button class="button" id="cancelCatalogForm" type="button">Cancel</button>
-            </form>
-        `;
-
-        document.getElementById("catalogForm").addEventListener("submit", (event) => {
-            event.preventDefault();
-            const formData = new FormData(event.currentTarget);
-            const newCharacter = {
-                id: Number(formData.get("id")),
-                name: formData.get("name").trim(),
-                genre: formData.get("genre").trim(),
-                type: formData.get("type").trim(),
-                buyLink: formData.get("buyLink").trim(),
-                imageLink: formData.get("imageLink").trim(),
-                description: formData.get("description").trim()
-            };
-
-            characters.push(newCharacter);
-            localCatalog = characters;
-            localStorage.setItem("savedCatalog", JSON.stringify(localCatalog));
-
-            const searchTerm = myInput.value.toLowerCase();
-            grid.innerHTML = "";
-            populateGrid(characters.filter(character =>
-                character.name.toLowerCase().includes(searchTerm) ||
-                character.genre.toLowerCase().includes(searchTerm) ||
-                character.type.toLowerCase().includes(searchTerm)
-            ));
-            document.getElementById("descriptionBox").textContent = "Character added to the catalog.";
-        });
-
-        document.getElementById("cancelCatalogForm").addEventListener("click", () => {
-            document.getElementById("descriptionBox").innerHTML = "";
-        });
-    });
-}
-
 //--------------------------------------------------------READ
 
+//---Load Catalog
+document.getElementById(`loadCatalog`).addEventListener('click', () => {
+    const savedCatalog = localStorage.getItem("savedCatalog");
+    if (!savedCatalog) return (
+        console.log("No saved data found"),
+        descBox.innerHTML = 
+        `
+            <div class="my-auto">
+                <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                    <figure class="image is-flex is-align-items-center" style="width: 50%;"><img src=${failIcon} alt="Placeholder image" style="width: 50%;"><img src=images/cloud-upload-outline.svg alt="Placeholder image" style="width: 45%;"></figure>
+                    <p class="title has-text-black ml-5">No local storage found</p>
+                </div>
+            </div>
+        `);
+
+    try {
+        console.log("Loaded catalog data")
+        catalog = JSON.parse(savedCatalog);
+        localCatalog = catalog;
+        const searchTerm = searchInput.value.toLowerCase();
+        grid.innerHTML = "";
+        populateGrid(catalog.filter(item => item.name.toLowerCase().includes(searchTerm) || item.genre.toLowerCase().includes(searchTerm) || item.type.toLowerCase().includes(searchTerm) ));
+        descBox.innerHTML = 
+        `
+            <div class="my-auto">
+                <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                    <figure class="image is-flex is-align-items-center" style="width: 50%;"><img src=${successIcon} alt="Placeholder image" style="width: 50%;"><img src=images/cloud-upload-outline.svg alt="Placeholder image" style="width: 50%;"></figure>
+                    <p class="title has-text-black ml-5">Loaded from local storage</p>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            initializeDescriptionBox();
+        }, 1000);
+    } catch (error) {
+        console.log("Tried to load saved catalog but it had a corrupted JSON, loading default catalog and deleting corrupted files...", error)
+        descBox.innerHTML = 
+        `
+            <div class="my-auto">
+                <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                    <figure class="image is-flex is-align-items-center" style="width: 50%; gap: 0.5rem;"><img src=${failIcon} alt="Placeholder image" style="width: 50%;"><img src=images/cloud-upload-outline.svg alt="Placeholder image" style="width: 45%;"></figure>
+                    <p class="title has-text-black is-size-4 ml-5">Couldn't load from local storage</p>
+                </div>
+            </div>
+        `;
+        setTimeout(() => {
+            initializeDescriptionBox();
+        }, 1000);
+        localStorage.removeItem("savedCatalog")
+        catalog = defaultCatalog
+    }
+});
+
 //-----Search Box
-myInput.addEventListener('input', (event) => {
+searchInput.addEventListener('input', (event) => {
     const searchTerm = event.target.value.toLowerCase();
-    const characters = (localCatalog || catalog).filter(character =>
-        character.name.toLowerCase().includes(searchTerm) || character.genre.toLowerCase().includes(searchTerm) || character.type.toLowerCase().includes(searchTerm)
+    const items = (localCatalog || catalog).filter(item =>
+        item.name.toLowerCase().includes(searchTerm) || item.genre.toLowerCase().includes(searchTerm) || item.type.toLowerCase().includes(searchTerm)
     );
 
     grid.innerHTML = "";
-    populateGrid(characters);
+    populateGrid(items);
 });
+
+//--------------------------------------------------------------------------UPDATE
+
+//----Listening for clicks
+grid.addEventListener('click', (event) => {
+    //-------------------------------------AddItems
+    if (event.target.closest('#addToCatalog')) {
+        const items = localCatalog || catalog;
+        const nextId = items.reduce((maxId, item) => Math.max(maxId, Number(item.id) || 0), -1) + 1;
+
+        descBox.innerHTML = `
+            <h1 class="title has-text-centered">Add a item</h1>
+            <div class="is-rounded" style="max-height: 90%; overflow-y: auto;">
+                <input class="input mb-2" type="text" id="newId" value="${nextId}" readonly/>
+                <input class="input mb-2" type="text" id="newName" placeholder="Name"/>
+                <input class="input mb-2" type="text" id="newGenre" placeholder="Genre"/>
+                <input class="input mb-2" type="text" id="newType" placeholder="Type"/>
+                <input class="input mb-2" type="text" id="newBuyLink" placeholder="Buy Link"/>
+                <input class="input mb-2" type="text" id="newImageLink" placeholder="Image Link"/>
+                <input class="input mb-2 textarea" type="text" id="newDescription" placeholder="Description"/>
+                <button class="button" type="button" id="submitForm">Add item</button>
+                <button class="button" type="button" id="cancelForm">Cancel</button>
+            </div>
+        `;
+        descBox.querySelector('#submitForm').addEventListener('click', () => {
+            const items = localCatalog || catalog;
+            const newItem = {
+                id: descBox.querySelector('#newId').value,
+                name: descBox.querySelector('#newName').value.trim(),
+                genre: descBox.querySelector('#newGenre').value.trim(),
+                type: descBox.querySelector('#newType').value.trim(),
+                buyLink: descBox.querySelector('#newBuyLink').value.trim(),
+                imageLink: descBox.querySelector('#newImageLink').value.trim(),
+                description: descBox.querySelector('#newDescription').value.trim()
+            };
+
+            descBox.querySelectorAll('.is-danger').forEach(element => {
+                element.classList.remove('is-danger');
+            });
+
+            if (!newItem.name || !newItem.genre || !newItem.type) {
+                if (!newItem.name) {
+                    descBox.querySelector('#newName').classList.add("is-danger");
+                }
+                if (!newItem.genre) {
+                    descBox.querySelector('#newGenre').classList.add("is-danger");
+                }
+                if (!newItem.type) {
+                    descBox.querySelector('#newType').classList.add("is-danger");
+                }
+                return;
+            }
+
+            items.push(newItem);
+            catalog = items;
+            localCatalog = items;
+            grid.innerHTML = '';
+            populateGrid(catalog);
+            initializeDescriptionBox();
+        });
+        descBox.querySelector('#cancelForm').addEventListener('click', () => {
+        initializeDescriptionBox();
+        return;
+        });
+    }
+
+    //-------------------------------------EditItems
+    const editButton = event.target.closest('[id^="editItem"]');
+    if (editButton) {
+        const items = localCatalog || catalog;
+        const item = items.find(item => `editItem${item.id}` === editButton.id);
+
+        descBox.innerHTML = `
+            <h1 class="title has-text-centered">Edit a item</h1>
+            <div class="is-rounded" style="max-height: 90%; overflow-y: auto;">
+                <input class="input mb-2" type="text" id="editId" readonly/>
+                <input class="input mb-2" type="text" id="editName" placeholder="Name"/>
+                <input class="input mb-2" type="text" id="editGenre" placeholder="Genre"/>
+                <input class="input mb-2" type="text" id="editType" placeholder="Type"/>
+                <input class="input mb-2" type="text" id="editBuyLink" placeholder="Buy Link"/>
+                <input class="input mb-2" type="text" id="editImageLink" placeholder="Image Link"/>
+                <textarea class="textarea mb-2" id="editDescription" placeholder="Description"></textarea>
+                <button class="button" type="button" id="submitEdit">Save changes</button>
+                <button class="button" type="button" id="cancelEdit">Cancel</button>
+                <button class="button is-danger ml-auto" type="button" id="delete">Delete</button>
+            </div>
+        `;
+
+        descBox.querySelector('#editId').value = item.id;
+        descBox.querySelector('#editName').value = item.name;
+        descBox.querySelector('#editGenre').value = item.genre;
+        descBox.querySelector('#editType').value = item.type;
+        descBox.querySelector('#editBuyLink').value = item.buyLink;
+        descBox.querySelector('#editImageLink').value = item.imageLink;
+        descBox.querySelector('#editDescription').value = item.description;
+
+        descBox.querySelector('#submitEdit').addEventListener('click', () => {
+            const updatedItem = {
+                name: descBox.querySelector('#editName').value.trim(),
+                genre: descBox.querySelector('#editGenre').value.trim(),
+                type: descBox.querySelector('#editType').value.trim(),
+                buyLink: descBox.querySelector('#editBuyLink').value.trim(),
+                imageLink: descBox.querySelector('#editImageLink').value.trim(),
+                description: descBox.querySelector('#editDescription').value.trim()
+            };
+
+            descBox.querySelectorAll('.is-danger').forEach(element => element.classList.remove('is-danger'));
+            if (!updatedItem.name || !updatedItem.genre || !updatedItem.type) {
+                if (!updatedItem.name) descBox.querySelector('#editName').classList.add('is-danger');
+                if (!updatedItem.genre) descBox.querySelector('#editGenre').classList.add('is-danger');
+                if (!updatedItem.type) descBox.querySelector('#editType').classList.add('is-danger');
+                return;
+            }
+
+            Object.assign(item, updatedItem);
+            catalog = items;
+            localCatalog = items;
+            const searchTerm = searchInput.value.toLowerCase();
+            grid.innerHTML = '';
+            populateGrid(items.filter(item =>
+                item.name.toLowerCase().includes(searchTerm) ||
+                item.genre.toLowerCase().includes(searchTerm) ||
+                item.type.toLowerCase().includes(searchTerm)
+            ));
+            initializeDescriptionBox();
+        });
+        descBox.querySelector('#cancelEdit').addEventListener('click', () => {
+            initializeDescriptionBox();
+        });
+    }
+    
+//-----------------------------------------------------------------------------DELETE
+    //-------------------------------------DeleteItems
+    descBox.querySelector('#delete').addEventListener('click', () => {
+        const items = localCatalog || catalog;
+        const itemId = descBox.querySelector('#editId').value;
+        const itemIndex = items.findIndex(item => item.id == itemId);
+
+        if(!confirm(`Are you sure you want to delete ${items[itemIndex].name}?`)) {
+            return;
+        }
+        catalog = items.filter(item => item.id != itemId);
+        localCatalog = catalog;
+        const searchTerm = searchInput.value.toLowerCase();
+        grid.innerHTML = '';
+        populateGrid(catalog.filter(item =>
+            item.name.toLowerCase().includes(searchTerm) ||
+            item.genre.toLowerCase().includes(searchTerm) ||
+            item.type.toLowerCase().includes(searchTerm)
+        ));
+        initializeDescriptionBox();
+    })
+});
+
+
+//---Reset Catalog/Delete local storage
+document.getElementById(`resetCatalog`).addEventListener('click', () => {
+    catalog = defaultCatalog.map(item => ({ ...item }));
+    localCatalog = catalog;
+    localStorage.removeItem("savedCatalog");
+
+    const searchTerm = searchInput.value.toLowerCase();
+    grid.innerHTML = "";
+    populateGrid(catalog.filter(item => item.name.toLowerCase().includes(searchTerm) || item.genre.toLowerCase().includes(searchTerm) || item.type.toLowerCase().includes(searchTerm) ));
+    descBox.innerHTML = 
+    `
+        <div class="my-auto">
+            <div class="card-image invert is-flex is-justify-content-center is-align-items-center" style="min-height: 100%;">
+                <figure class="image is-flex is-align-items-center" style="width: 50%; gap: 0.5rem;"><img src=${successIcon} alt="Placeholder image" style="width: 50%;"><img src=images/refresh-outline.svg alt="Placeholder image" style="width: 45%;"></figure>
+                <p class="title has-text-black is-size-3 ml-5">Local storage deleted</p>
+            </div>
+        </div>
+    `;
+    setTimeout(() => {
+        initializeDescriptionBox();
+    }, 1000);
+});
+
+//--------------Initialize functions
+
+initializeGrid();
+initializeDescriptionBox();
